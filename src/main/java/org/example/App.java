@@ -23,7 +23,7 @@ public class App
     {
         HttpServer server = null;
         try {
-            server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
+            server = HttpServer.create(new InetSocketAddress("127.0.0.1", 8001), 0);
         } catch (java.io.IOException e) {
             System.out.println("Error occurred");
             System.exit(1);
