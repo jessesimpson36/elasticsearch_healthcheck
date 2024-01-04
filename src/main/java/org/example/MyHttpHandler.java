@@ -4,9 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,11 +20,12 @@ public class MyHttpHandler implements HttpHandler {
         handleResponse(httpExchange,response);
     }
     private String handleGetRequest(HttpExchange httpExchange) {
-        final RestHighLevelClient esClient = new RestHighLevelClient(
-                RestClient.builder(
-                        new HttpHost("localhost", 9200, "http")
-                )
+        RestClientBuilder builder = RestClient.builder(
+                new HttpHost("localhost", 9200, "http")
         );
+        final RestHighLevelClient esClient = new RestHighLevelClientBuilder(builder.build())
+                .setApiCompatibilityMode(true)
+                .build();
         int numberOfClusterNodes = 0;
 
         try {
