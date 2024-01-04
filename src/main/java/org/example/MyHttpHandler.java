@@ -20,8 +20,13 @@ public class MyHttpHandler implements HttpHandler {
         handleResponse(httpExchange,response);
     }
     private String handleGetRequest(HttpExchange httpExchange) {
+
+        String elasticsearchHostname = System.getenv("ELASTICSEARCH_HOSTNAME");
+        String elasticsearchPort = System.getenv("ELASTICSEARCH_PORT");
+
+        int elasticsearchPortNumber = Integer.parseInt(elasticsearchPort);
         RestClientBuilder builder = RestClient.builder(
-                new HttpHost("localhost", 9200, "http")
+                new HttpHost(elasticsearchHostname, elasticsearchPortNumber, "http")
         );
         final RestHighLevelClient esClient = new RestHighLevelClientBuilder(builder.build())
                 .setApiCompatibilityMode(true)
